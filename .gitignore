@@ -9,8 +9,8 @@ build/
 out/
 *.tsbuildinfo
 
-# Generated code (Prisma Client & GraphQL Codegen)
-src/generated/
+# Generated code
+prisma/migrations/
 
 # Environment variables & secrets
 .env
