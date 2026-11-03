@@ -20,12 +20,11 @@ model User {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
-  posts         Post[]
-  likes         Like[]
-  comments      Comment[]
-  followers     Follow[]       @relation("following")
-  following     Follow[]       @relation("follower")
-  refreshTokens RefreshToken[]
+  posts     Post[]
+  likes     Like[]
+  comments  Comment[]
+  followers Follow[]  @relation("following")
+  following Follow[]  @relation("follower")
 }
 
 model Follow {
@@ -40,28 +39,19 @@ model Follow {
   @@index([followingId])
 }
 
-enum PostStatus {
-  PROCESSING
-  PUBLISHED
-  ARCHIVED
-  FAILED
-}
 
 model Post {
   id           String     @id @default(uuid()) @db.Uuid
   authorId     String     @db.Uuid
   caption      String?    @db.VarChar(2200)
-  status       PostStatus @default(PUBLISHED)
   likeCount    Int        @default(0)
   commentCount Int        @default(0)
   createdAt    DateTime   @default(now())
-  deletedAt    DateTime?
 
   author   User          @relation(fields: [authorId], references: [id], onDelete: Cascade)
   media    PostMedia[]
   likes    Like[]
   comments Comment[]
-  hashtags PostHashtag[]
 
   @@index([authorId, id(sort: Desc)])
 }
@@ -97,42 +87,9 @@ model Comment {
   authorId  String    @db.Uuid
   body      String    @db.VarChar(2200)
   createdAt DateTime  @default(now())
-  deletedAt DateTime?
 
   post   Post @relation(fields: [postId], references: [id], onDelete: Cascade)
   author User @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
   @@index([postId, id(sort: Desc)])
-}
-
-model Hashtag {
-  id    String        @id @default(uuid()) @db.Uuid
-  name  String        @unique
-  posts PostHashtag[]
-}
-
-model PostHashtag {
-  postId    String @db.Uuid
-  hashtagId String @db.Uuid
-
-  post    Post    @relation(fields: [postId], references: [id], onDelete: Cascade)
-  hashtag Hashtag @relation(fields: [hashtagId], references: [id], onDelete: Cascade)
-
-  @@id([postId, hashtagId])
-  @@index([hashtagId, postId(sort: Desc)])
-}
-
-model RefreshToken {
-  id        String    @id @default(uuid()) @db.Uuid
-  userId    String    @db.Uuid
-  familyId  String    @db.Uuid
-  tokenHash String    @unique
-  expiresAt DateTime
-  revokedAt DateTime?
-  createdAt DateTime  @default(now())
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([userId])
-  @@index([familyId])
 }

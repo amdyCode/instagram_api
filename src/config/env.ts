@@ -7,10 +7,8 @@ const EnvSchema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
   PORT: z.coerce.number().default(4000),
   DATABASE_URL: z.string().url(),
-  REDIS_URL: z.string().url().default('redis://localhost:6379'),
-  JWT_ACCESS_SECRET: z.string().min(32),
-  JWT_ACCESS_TTL: z.string().default('15m'),
-  REFRESH_TOKEN_TTL_DAYS: z.coerce.number().default(30),
+  JWT_SECRET: z.string().min(16).default('secret-jwt-key'),
+  JWT_EXPIRES_IN: z.string().default('30d'),
 });
 
 export const env = EnvSchema.parse(process.env);

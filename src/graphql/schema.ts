@@ -1,11 +1,30 @@
-export const typeDefs = `#graphql
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { mergeTypeDefs, mergeResolvers } from '@graphql-tools/merge';
+import { authResolvers } from '../modules/auth/auth_resolvers.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const baseTypeDefs = `#graphql
   type Query {
     health: String!
   }
 `;
 
-export const resolvers = {
-  Query: {
-    health: () => 'Instagram API is healthy and operational',
+const authSchema = fs.readFileSync(
+  path.join(__dirname, '../modules/auth/auth.graphql'),
+  'utf-8',
+);
+
+export const typeDefs = mergeTypeDefs([baseTypeDefs, authSchema]);
+
+export const resolvers = mergeResolvers([
+  {
+    Query: {
+      health: () => 'Instagram API is healthy and operational',
+    },
   },
-};
+  authResolvers,
+]);
