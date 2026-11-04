@@ -5,6 +5,7 @@ import { mergeTypeDefs, mergeResolvers } from '@graphql-tools/merge';
 import { authResolvers } from '../modules/auth/auth_resolvers.js';
 import { usersResolvers } from '../modules/users/user_resolvers.js';
 import { postResolvers } from '../modules/posts/post_resolvers.js';
+import { feedResolvers } from '../modules/feed/feed_resolvers.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -30,7 +31,12 @@ const postSchema = fs.readFileSync(
   'utf-8',
 );
 
-export const typeDefs = mergeTypeDefs([baseTypeDefs, authSchema, userSchema, postSchema]);
+const feedSchema = fs.readFileSync(
+  path.join(__dirname, '../modules/feed/feed.graphql'),
+  'utf-8',
+);
+
+export const typeDefs = mergeTypeDefs([baseTypeDefs, authSchema, userSchema, postSchema, feedSchema]);
 
 export const resolvers = mergeResolvers([
   {
@@ -41,4 +47,5 @@ export const resolvers = mergeResolvers([
   authResolvers,
   usersResolvers,
   postResolvers,
+  feedResolvers,
 ]);

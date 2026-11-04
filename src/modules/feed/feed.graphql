@@ -1,0 +1,5 @@
+type Query {
+  feed(limit: Int, offset: Int): [Post!]!
+  explorePosts(limit: Int, offset: Int): [Post!]!
+  searchUsers(query: String!, limit: Int): [User!]!
+}
