@@ -1,16 +1,3 @@
-type User {
-  id: ID!
-  email: String!
-  username: String!
-  fullName: String
-  bio: String
-  avatarUrl: String
-  postCount: Int!
-  followerCount: Int!
-  followingCount: Int!
-  createdAt: String!
-}
-
 type AuthPayload {
   token: String!
   user: User!

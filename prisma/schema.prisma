@@ -13,6 +13,7 @@ model User {
   passwordHash   String
   fullName       String?  @db.VarChar(60)
   bio            String?  @db.VarChar(150)
+  link           String?  @db.VarChar(150)
   avatarUrl      String?
   postCount      Int      @default(0)
   followerCount  Int      @default(0)

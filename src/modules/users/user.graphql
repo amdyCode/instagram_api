@@ -1,0 +1,52 @@
+type PostMedia {
+  id: ID!
+  url: String!
+  position: Int!
+  width: Int
+  height: Int
+}
+
+type Post {
+  id: ID!
+  author: User!
+  caption: String
+  media: [PostMedia!]!
+  likeCount: Int!
+  commentCount: Int!
+  likedByMe: Boolean!
+  createdAt: String!
+}
+
+type User {
+  id: ID!
+  email: String!
+  username: String!
+  fullName: String
+  bio: String
+  link: String
+  avatarUrl: String
+  postCount: Int!
+  followerCount: Int!
+  followingCount: Int!
+  isMe: Boolean!
+  isFollowing: Boolean!
+  posts: [Post!]!
+  createdAt: String!
+}
+
+input UpdateProfileInput {
+  fullName: String
+  bio: String
+  avatarUrl: String
+  link: String
+}
+
+type Query {
+  user(username: String!): User
+}
+
+type Mutation {
+  updateProfile(input: UpdateProfileInput!): User!
+  follow(userId: ID!): User!
+  unfollow(userId: ID!): User!
+}
