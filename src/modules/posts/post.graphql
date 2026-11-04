@@ -1,0 +1,32 @@
+type PostMedia {
+  id: ID!
+  url: String!
+  position: Int!
+  width: Int
+  height: Int
+}
+
+type Post {
+  id: ID!
+  author: User!
+  caption: String
+  media: [PostMedia!]!
+  likeCount: Int!
+  commentCount: Int!
+  likedByMe: Boolean!
+  createdAt: String!
+}
+
+input CreatePostInput {
+  caption: String
+  mediaUrls: [String!]!
+}
+
+type Query {
+  post(id: ID!): Post
+}
+
+type Mutation {
+  createPost(input: CreatePostInput!): Post!
+  deletePost(id: ID!): Boolean!
+}

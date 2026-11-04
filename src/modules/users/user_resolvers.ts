@@ -77,39 +77,4 @@ export const usersResolvers = {
         : parent.createdAt;
     },
   },
-  Post: {
-    author: async (parent: { authorId: string }, _args: unknown, ctx: GraphQLContext) => {
-      return ctx.prisma.user.findUnique({
-        where: { id: parent.authorId },
-      });
-    },
-    media: async (
-      parent: { id: string; media?: unknown[] },
-      _args: unknown,
-      ctx: GraphQLContext,
-    ) => {
-      if (parent.media) return parent.media;
-      return ctx.prisma.postMedia.findMany({
-        where: { postId: parent.id },
-        orderBy: { position: 'asc' },
-      });
-    },
-    likedByMe: async (parent: { id: string }, _args: unknown, ctx: GraphQLContext) => {
-      if (!ctx.userId) return false;
-      const like = await ctx.prisma.like.findUnique({
-        where: {
-          userId_postId: {
-            userId: ctx.userId,
-            postId: parent.id,
-          },
-        },
-      });
-      return !!like;
-    },
-    createdAt: (parent: { createdAt: Date | string }) => {
-      return parent.createdAt instanceof Date
-        ? parent.createdAt.toISOString()
-        : parent.createdAt;
-    },
-  },
 };
