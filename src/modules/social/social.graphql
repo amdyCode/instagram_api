@@ -1,0 +1,19 @@
+type Comment {
+  id: ID!
+  postId: ID!
+  author: User!
+  body: String!
+  text: String!
+  createdAt: String!
+}
+
+type Query {
+  comments(postId: ID!, limit: Int, offset: Int): [Comment!]!
+}
+
+type Mutation {
+  likePost(postId: ID!): Post!
+  unlikePost(postId: ID!): Post!
+  addComment(postId: ID!, body: String!): Comment!
+  deleteComment(id: ID!): Boolean!
+}

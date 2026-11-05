@@ -6,6 +6,7 @@ import { authResolvers } from '../modules/auth/auth_resolvers.js';
 import { usersResolvers } from '../modules/users/user_resolvers.js';
 import { postResolvers } from '../modules/posts/post_resolvers.js';
 import { feedResolvers } from '../modules/feed/feed_resolvers.js';
+import { socialResolvers } from '../modules/social/social_resolvers.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -36,7 +37,19 @@ const feedSchema = fs.readFileSync(
   'utf-8',
 );
 
-export const typeDefs = mergeTypeDefs([baseTypeDefs, authSchema, userSchema, postSchema, feedSchema]);
+const socialSchema = fs.readFileSync(
+  path.join(__dirname, '../modules/social/social.graphql'),
+  'utf-8',
+);
+
+export const typeDefs = mergeTypeDefs([
+  baseTypeDefs,
+  authSchema,
+  userSchema,
+  postSchema,
+  feedSchema,
+  socialSchema,
+]);
 
 export const resolvers = mergeResolvers([
   {
@@ -48,4 +61,5 @@ export const resolvers = mergeResolvers([
   usersResolvers,
   postResolvers,
   feedResolvers,
+  socialResolvers,
 ]);
